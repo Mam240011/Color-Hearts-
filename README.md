@@ -4,37 +4,41 @@
 https://github.com/Mam240011/Color-Hearts-
 
 ## Description
-A lightweight Python program that renders falling, colorful heart signs with visuals shapes and interactive controls. It is designed for use in live visuals and media-art experiments.
+A Pygame-based generative visual that renders falling, colorful vector hearts with fading trails and a bloom/glow effect. It is designed for use in live visuals and media-art experiments.
 
 ## Features
-- Colorful heart rain animation
-Render heart signs with randomized sizes, colors, and speeds using Pygame.
-- Expose CLI flags or a simple config file to set number of hearts, speed range, size range, color palettes, and background colors.
-- Interaction and controls
-Keyboard controls for pause/resume, speed up/down, reset, and quit; optional toggles for bloom/blur or trailing effects.
-
+Falling colorful hearts
+- Hearts made with randomized size, speed, color (warm/blue/green) and opacity rendered each frame.
+Fading trails
+- Trails that continues and disappears over time to make motion blur-like trails.
+Bloom / glow effect
+- Blurred glow layer made from per-heart glow, downsampled/upsampled to simulate bloom.
+Interactive controls
+- Keyboard controls: Space (pause), +/- (speed), R (reset), T (toggle trails), B (toggle bloom), Q/Esc (quit).
+Responsive window
+- Resizable window with gradient background and automatic re-render of assets on resize.
 ## Challenges
-- Learning Pygame rendering.
-- Making smooth and clean animations.
-- Ensuring consistent font/glyph availability for heart symbols.
+- Alpha/blend handling for trails and blooming without dropping FPS.
+- Implementing pleasant bloom using downsample/blur passes and handling optional numpy speed up.
+- Designing vector hearts that scale cleanly and look good across many sizes/resolutions.
 
 ## Outcomes
 Ideal Outcome:
-- A customizable tool with multiple color palettes, smooth rendering with visual effects, keyboard controls, and a frame-export option for generating assets.
+- A polished generative-visual application with smooth 60fps performance on typical hardware, good visually trails and bloom, multiple presets and easy export of frames/video for use in installations.
 
 Minimal Viable Outcome:
-- A stable Pygame script that shows falling colorful hearts, adapts to window size, supports basic pause/reset/speed controls.
+- A stable Pygame script that shows falling colored hearts with working trails and bloom toggles, resizing, and keyboard controls.
 
 ## Milestones
 
 - Week 1
   1. Set up repository, project layout, README, and basic requirements.
-  2. Put in core animation loop: spawn hearts with random size/color/speed and draw falling motion.
+  2. Put in core heart system: vector heart rendering, randomized properties, falling motion, and gradient background.
 
 - Week 2
-  1. Add CLI/config options for number of hearts, size/speed ranges, and color palettes.
-  2. Put in keyboard controls (pause, speed adjust, reset, quit).
+  1. Add trails system: decay/fade, and T toggle.
+  2. Add bloom: per-heart glow, downsample/upsample blur pass, and B toggle.
 
 - Week N (Final)
-  1. Add  visual enhancements: trails, bloom/blur shader.
+  1. Improve performance 
   2. Make a simple demo video.
