@@ -138,8 +138,7 @@ def main():
 if __name__ == "__main__":
     main()
 
-# colorful_hearts_rain.py
-# Requires: pygame (pip install pygame)
+# Requires: pygame
 # Run: python colorful_hearts_rain.py
 
 
