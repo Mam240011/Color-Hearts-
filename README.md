@@ -1,7 +1,7 @@
 # Colorful Hearts Rain
 
 ## Repository
-[<Link to your project's public GitHub respository>](https://github.com/Mam240011/Hi-)
+https://github.com/Mam240011/Color-Hearts-
 
 ## Description
 A lightweight Python program that renders falling, colorful heart signs with visuals shapes and interactive controls. It is designed for use in live visuals and media-art experiments.
