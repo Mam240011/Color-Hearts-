@@ -1,7 +1,3 @@
-# colorful_hearts_rain.py
-# Requires: pygame (pip install pygame)
-# Run: python colorful_hearts_rain.py
-
 import pygame, random, sys, math, time
 
 # Configuration
@@ -238,6 +234,7 @@ def main():
 if __name__ == "__main__":
     main()
 
-
+# Requires: pygame 
+# Run: python colorful_hearts_rain.py
 
 
