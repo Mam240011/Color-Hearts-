@@ -11,11 +11,6 @@ NUM_HEARTS = 120
 MIN_SPEED, MAX_SPEED = 60, 360    # pixels per second
 MIN_SIZE, MAX_SIZE = 16, 64
 
-pygame.init()
-screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
-pygame.display.set_caption("Colorful Hearts Rain")
-clock = pygame.time.Clock()
-
 def hsv_to_rgb(h, s, v):
     h = float(h) % 360
     s = float(s)
@@ -49,32 +44,28 @@ def random_color():
     return hsv_to_rgb(h, s, v)
 
 def make_vector_heart(size, color, alpha):
-    # Draw heart shape into a Surface sized (size,size) using two circles + bottom triangle.
-    surf = pygame.Surface((size, size), pygame.SRCALPHA)
-    surf = surf.convert_alpha()
+    surf = pygame.Surface((size, size), pygame.SRCALPHA).convert_alpha()
     r = size * 0.25
     cx1 = size * 0.35
     cx2 = size * 0.65
     cy = size * 0.30
-    # circles (left, right)
     pygame.draw.circle(surf, color + (alpha,), (int(cx1), int(cy)), int(r))
     pygame.draw.circle(surf, color + (alpha,), (int(cx2), int(cy)), int(r))
-    # bottom triangle
     p1 = (int(size * 0.15), int(size * 0.45))
     p2 = (int(size * 0.85), int(size * 0.45))
     p3 = (int(size * 0.5), int(size * 0.95))
     pygame.draw.polygon(surf, color + (alpha,), (p1, p2, p3))
-    # optional small smoothing: draw a slightly smaller overlay to fix seam
     return surf
 
 class Heart:
-    def __init__(self):
+    def __init__(self, screen):
+        self.screen = screen
         self.reset(initial=True)
 
     def reset(self, initial=False):
         self.size = random.randint(MIN_SIZE, MAX_SIZE)
-        self.x = random.uniform(0, max(1, screen.get_width() - self.size))
-        self.y = random.uniform(-screen.get_height(), -self.size) if initial else random.uniform(-self.size*8, -self.size)
+        self.x = random.uniform(0, max(1, self.screen.get_width() - self.size))
+        self.y = random.uniform(-self.screen.get_height(), -self.size) if initial else random.uniform(-self.size*8, -self.size)
         speed_factor = (self.size / MAX_SIZE) * 0.8 + 0.6
         self.speed = random.uniform(MIN_SPEED, MAX_SPEED) * speed_factor
         self.color = random_color()
@@ -87,15 +78,11 @@ class Heart:
     def update(self, dt):
         self.y += self.speed * dt
         self.x += math.sin(self.y * 0.02 + self.size) * 20 * dt
-        if self.y - self.size > screen.get_height():
+        if self.y - self.size > self.screen.get_height():
             self.reset()
 
     def draw(self, surf):
         surf.blit(self.image, (int(self.x), int(self.y)))
-
-hearts = [Heart() for _ in range(NUM_HEARTS)]
-
-paused = False
 
 def make_gradient(w, h, top=(10,10,20), bottom=(40,10,30)):
     grad = pygame.Surface((w, h))
@@ -107,40 +94,53 @@ def make_gradient(w, h, top=(10,10,20), bottom=(40,10,30)):
         pygame.draw.line(grad, (r, g, b), (0, y), (w, y))
     return grad
 
-gradient = make_gradient(WIDTH, HEIGHT)
+def main():
+    pygame.init()
+    screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
+    pygame.display.set_caption("Colorful Hearts Rain")
+    clock = pygame.time.Clock()
 
-while True:
-    dt = clock.tick(FPS) / 1000.0
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit(); sys.exit()
-        elif event.type == pygame.VIDEORESIZE:
-            WIDTH, HEIGHT = event.w, event.h
-            screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
-            gradient = make_gradient(WIDTH, HEIGHT)
-            for h in hearts:
-                h._render_image()
-        elif event.type == pygame.KEYDOWN:
-            if event.key in (pygame.K_q, pygame.K_ESCAPE):
+    hearts = [Heart(screen) for _ in range(NUM_HEARTS)]
+    paused = False
+    gradient = make_gradient(WIDTH, HEIGHT)
+
+    while True:
+        dt = clock.tick(FPS) / 1000.0
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
                 pygame.quit(); sys.exit()
-            elif event.key == pygame.K_SPACE:
-                paused = not paused
-            elif event.key in (pygame.K_PLUS, pygame.K_EQUALS):
-                for h in hearts: h.speed *= 1.15
-            elif event.key in (pygame.K_MINUS, pygame.K_UNDERSCORE):
-                for h in hearts: h.speed *= 0.85
-            elif event.key == pygame.K_r:
-                for h in hearts: h.reset()
+            elif event.type == pygame.VIDEORESIZE:
+                w, h = event.w, event.h
+                screen = pygame.display.set_mode((w, h), pygame.RESIZABLE)
+                gradient = make_gradient(w, h)
+                for hrt in hearts:
+                    hrt.screen = screen
+                    hrt._render_image()
+            elif event.type == pygame.KEYDOWN:
+                if event.key in (pygame.K_q, pygame.K_ESCAPE):
+                    pygame.quit(); sys.exit()
+                elif event.key == pygame.K_SPACE:
+                    paused = not paused
+                elif event.key in (pygame.K_PLUS, pygame.K_EQUALS):
+                    for hrt in hearts: hrt.speed *= 1.15
+                elif event.key in (pygame.K_MINUS, pygame.K_UNDERSCORE):
+                    for hrt in hearts: hrt.speed *= 0.85
+                elif event.key == pygame.K_r:
+                    for hrt in hearts: hrt.reset()
 
-    if not paused:
-        for h in hearts: h.update(dt)
+        if not paused:
+            for hrt in hearts: hrt.update(dt)
 
-    screen.blit(gradient, (0,0))
-    for h in hearts: h.draw(screen)
+        screen.blit(gradient, (0,0))
+        for hrt in hearts: hrt.draw(screen)
 
-    hud_font = pygame.font.SysFont(None, 18)
-    hud = hud_font.render("Space: pause  +/-: speed  R: reset  Q/Esc: quit", True, (220,220,220))
-    screen.blit(hud, (8, screen.get_height() - 24))
-    pygame.display.flip()
+        hud_font = pygame.font.SysFont(None, 18)
+        hud = hud_font.render("Space: pause  +/-: speed  R: reset  Q/Esc: quit", True, (220,220,220))
+        screen.blit(hud, (8, screen.get_height() - 24))
+        pygame.display.flip()
+
+if __name__ == "__main__":
+    main()
+
 
 
