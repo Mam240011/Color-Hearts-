@@ -140,9 +140,6 @@ def main():
     clock = pygame.time.Clock()
 
     hearts = [Heart(screen) for _ in range(NUM_HEARTS)]
-    paused = False
-    trails_enabled = True
-    bloom_enabled = True
 
     gradient = make_gradient(WIDTH, HEIGHT)
     # trail surface accumulates previous frames; keep alpha channel
