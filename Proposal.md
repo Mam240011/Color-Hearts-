@@ -7,18 +7,18 @@ https://github.com/Mam240011/Color-Hearts-
 A Pygame-based generative visual that renders falling, Animated floating hearts, Smooth bloom lighting effect. Motion trails, Interactive click explosions and Dynamic screen flash effect. Designed as a real-time animated visualizer
 
 ## Features:
-- Falling colorful hearts
+- Falling colorful hearts.
 - Hearts made with randomized size, speed, color (warm/blue/green) and opacity rendered each frame.
-Fading trails
+### Fading trails
 - Trails that disappears to make motion blur-like trails.
 Bloom / glow effect
 - Blurred glow layer made from per-heart glow, downsampled/upsampled to simulate bloom. 
 Interactive Effects
-- Mouse clicks trigger explosions
-- Nearby hearts burst outward
-- Entire screen flashes white for impact 
+- Mouse clicks trigger explosions.
+- Nearby hearts burst outward.
+- Entire screen flashes white for impact. 
 Interactive controls
-- Keyboard controls: Space (pause), click (Mouse)
+- Keyboard controls: Space (pause), click (Mouse).
 - Resizable window with gradient background and automatic re-render of assets on resize.
 
 ## Challenges:
@@ -43,7 +43,7 @@ Add bloom: per-heart glow, downsample/upsample blur pass, and B toggle.
 Add explosions that pushes nearby hearts outward with the mouse.
 
 ## Week N (Final)
-Improve performance
+Improve performance.
 Make a simple demo video.
 
 
