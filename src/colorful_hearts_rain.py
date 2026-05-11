@@ -520,7 +520,7 @@ def main():
 if __name__ == "__main__":
     main()
 
-# Requires: pygame 
+# Requires: pygame, python
 # Run: python colorful_hearts_rain.py
 
 
