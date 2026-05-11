@@ -13,11 +13,11 @@ A Pygame-based generative visual that renders falling, Animated floating hearts,
 - Trails that disappears to make motion blur-like trails.
 Bloom / glow effect
 - Blurred glow layer made from per-heart glow, downsampled/upsampled to simulate bloom. 
-Interactive Effects
+### Interactive Effects
 - Mouse clicks trigger explosions.
 - Nearby hearts burst outward.
 - Entire screen flashes white for impact. 
-Interactive controls
+### Interactive controls
 - Keyboard controls: Space (pause), click (Mouse).
 - Resizable window with gradient background and automatic re-render of assets on resize.
 
